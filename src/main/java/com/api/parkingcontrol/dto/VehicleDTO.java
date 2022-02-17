@@ -14,7 +14,7 @@ public class VehicleDTO {
     private UUID id;
 
     @NotEmpty
-    @Size(min = 7, max = 7)
+    @Size(min = 6, max = 7)
     private String plate;
 
     @NotEmpty
@@ -26,6 +26,6 @@ public class VehicleDTO {
     private String model;
 
     @NotEmpty
-    @Size(min = 3, max = 70)
+    @Size(max = 70)
     private String color;
 }

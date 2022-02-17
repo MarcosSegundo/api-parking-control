@@ -3,6 +3,7 @@ package com.api.parkingcontrol.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.UUID;
@@ -17,14 +18,11 @@ public class ParkingSpotDTO {
     @Size(min = 1, max = 10)
     private String parkingSpotNumber;
 
-    @NotEmpty
-    private VehicleDTO vehicleDTO;
+    @Valid
+    private VehicleDTO vehicle;
 
     @NotEmpty
-    private String registrationDate;
-
-    @NotEmpty
-    @Size(min = 3, max = 130)
+    @Size(max = 130)
     private String responsibleName;
 
     @NotEmpty
