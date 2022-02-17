@@ -23,7 +23,7 @@ public class ParkingSpot {
     @Column(nullable = false, unique = true, length = 10)
     private String parkingSpotNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
     private Vehicle vehicle;
 
