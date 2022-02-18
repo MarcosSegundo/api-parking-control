@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.UUID;
 
@@ -14,22 +14,22 @@ public class ParkingSpotDTO {
 
     private UUID id;
 
-    @NotEmpty
+    @NotBlank(message = "the field shouldn't null or empty.")
     @Size(min = 1, max = 10)
     private String parkingSpotNumber;
 
     @Valid
     private VehicleDTO vehicle;
 
-    @NotEmpty
-    @Size(max = 130)
+    @NotBlank(message = "the field shouldn't null or empty.")
+    @Size(max = 70)
     private String responsibleName;
 
-    @NotEmpty
-    @Size(max = 30)
+    @NotBlank(message = "the field shouldn't null or empty.")
+    @Size(max = 10)
     private String apartment;
 
-    @NotEmpty
-    @Size(max = 30)
+    @NotBlank(message = "the field shouldn't null or empty.")
+    @Size(max = 10)
     private String block;
 }
