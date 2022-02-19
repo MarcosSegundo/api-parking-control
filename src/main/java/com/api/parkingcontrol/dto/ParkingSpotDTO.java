@@ -1,5 +1,6 @@
 package com.api.parkingcontrol.dto;
 
+import com.api.parkingcontrol.validation.constraints.ExistsParkingSpotNumber;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,6 +17,7 @@ public class ParkingSpotDTO {
 
     @NotBlank(message = "the field shouldn't null or empty.")
     @Size(min = 1, max = 10)
+    @ExistsParkingSpotNumber
     private String parkingSpotNumber;
 
     @Valid

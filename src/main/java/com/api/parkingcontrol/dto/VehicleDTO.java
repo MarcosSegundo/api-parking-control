@@ -1,5 +1,6 @@
 package com.api.parkingcontrol.dto;
 
+import com.api.parkingcontrol.validation.constraints.ExistsPlate;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,6 +17,7 @@ public class VehicleDTO {
 
     @NotBlank(message = "the field shouldn't null or empty.")
     @Pattern(regexp = "[a-zA-Z]{3}[0-9][A-Za-z0-9][0-9]{2}", message = "the plate is invalid")
+    @ExistsPlate
     private String plate;
 
     @NotBlank(message = "the field shouldn't null or empty.")
