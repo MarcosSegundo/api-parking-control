@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 @Service
 public class ParkingSpotService {
@@ -32,5 +33,9 @@ public class ParkingSpotService {
 
     public boolean existsByParkingSpotNumber(String parkingSpotNumber) {
         return parkingSpotRepository.existsByParkingSpotNumber(parkingSpotNumber);
+    }
+
+    public List<ParkingSpot> findAll() {
+        return parkingSpotRepository.findAll();
     }
 }
