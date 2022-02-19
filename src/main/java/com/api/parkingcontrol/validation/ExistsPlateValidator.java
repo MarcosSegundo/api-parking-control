@@ -1,11 +1,20 @@
 package com.api.parkingcontrol.validation;
 
+import com.api.parkingcontrol.services.VehicleService;
 import com.api.parkingcontrol.validation.constraints.ExistsPlate;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class ExistsPlateValidation implements ConstraintValidator<ExistsPlate, String> {
+public class ExistsPlateValidator implements ConstraintValidator<ExistsPlate, String> {
+
+    private final VehicleService vehicleService;
+
+    @Autowired
+    public ExistsPlateValidator(VehicleService vehicleService) {
+        this.vehicleService = vehicleService;
+    }
 
     @Override
     public void initialize(ExistsPlate constraintAnnotation) {
@@ -14,6 +23,6 @@ public class ExistsPlateValidation implements ConstraintValidator<ExistsPlate, S
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        return false;
+        return !vehicleService.existsByPlate(s);
     }
 }
