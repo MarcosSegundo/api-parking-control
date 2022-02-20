@@ -2,6 +2,7 @@ package com.api.parkingcontrol.services;
 
 import com.api.parkingcontrol.dto.ParkingSpotDTO;
 import com.api.parkingcontrol.entities.ParkingSpot;
+import com.api.parkingcontrol.exceptions.ParkingSpotNotFoundException;
 import com.api.parkingcontrol.mapper.ParkingSpotMapper;
 import com.api.parkingcontrol.repositories.ParkingSpotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ParkingSpotService {
@@ -37,5 +40,10 @@ public class ParkingSpotService {
 
     public List<ParkingSpot> findAll() {
         return parkingSpotRepository.findAll();
+    }
+
+    public ParkingSpot findById(UUID id) {
+        return parkingSpotRepository.findById(id)
+                .orElseThrow(() -> new ParkingSpotNotFoundException(id));
     }
 }

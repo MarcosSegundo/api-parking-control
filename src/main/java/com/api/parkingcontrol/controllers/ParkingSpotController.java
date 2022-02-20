@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/parking-spot")
@@ -26,5 +27,10 @@ public class ParkingSpotController {
     @GetMapping
     public ResponseEntity<List<ParkingSpot>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ParkingSpot> findById(@PathVariable UUID id) {
+        return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.findById(id));
     }
 }
