@@ -39,4 +39,13 @@ public class ParkingSpotController {
         parkingSpotService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ParkingSpot> update(
+            @Valid
+            @PathVariable UUID id,
+            @RequestBody ParkingSpotDTO parkingSpotDTO
+    ) {
+      return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.update(id, parkingSpotDTO));
+    }
 }

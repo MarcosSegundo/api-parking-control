@@ -50,4 +50,16 @@ public class ParkingSpotService {
     public void deleteById(UUID id) {
         parkingSpotRepository.delete(findById(id));
     }
+
+    public ParkingSpot update(UUID id, ParkingSpotDTO parkingSpotDTO) {
+
+        ParkingSpot savedParkingSpot = findById(id);
+        ParkingSpot updatedParkingSpot = MAPPER.toModel(parkingSpotDTO);
+
+        updatedParkingSpot.setId(savedParkingSpot.getId());
+        updatedParkingSpot.setRegistrationDate(savedParkingSpot.getRegistrationDate());
+        updatedParkingSpot.getVehicle().setId(savedParkingSpot.getVehicle().getId());
+
+        return parkingSpotRepository.save(updatedParkingSpot);
+    }
 }
