@@ -12,7 +12,6 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -45,5 +44,10 @@ public class ParkingSpotService {
     public ParkingSpot findById(UUID id) {
         return parkingSpotRepository.findById(id)
                 .orElseThrow(() -> new ParkingSpotNotFoundException(id));
+    }
+
+    @Transactional
+    public void deleteById(UUID id) {
+        parkingSpotRepository.delete(findById(id));
     }
 }

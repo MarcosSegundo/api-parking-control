@@ -33,4 +33,10 @@ public class ParkingSpotController {
     public ResponseEntity<ParkingSpot> findById(@PathVariable UUID id) {
         return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.findById(id));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        parkingSpotService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
