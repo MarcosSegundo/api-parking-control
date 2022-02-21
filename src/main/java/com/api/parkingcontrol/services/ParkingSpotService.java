@@ -6,6 +6,8 @@ import com.api.parkingcontrol.exceptions.ParkingSpotNotFoundException;
 import com.api.parkingcontrol.mapper.ParkingSpotMapper;
 import com.api.parkingcontrol.repositories.ParkingSpotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -39,6 +41,10 @@ public class ParkingSpotService {
 
     public List<ParkingSpot> findAll() {
         return parkingSpotRepository.findAll();
+    }
+
+    public Page<ParkingSpot> findAllPageable(Pageable pageable) {
+        return parkingSpotRepository.findAll(pageable);
     }
 
     public ParkingSpot findById(UUID id) {
