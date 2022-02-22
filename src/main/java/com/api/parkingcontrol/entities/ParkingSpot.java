@@ -44,11 +44,11 @@ public class ParkingSpot {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ParkingSpot that = (ParkingSpot) o;
-        return id.equals(that.id) && parkingSpotNumber.equals(that.parkingSpotNumber) && vehicle.equals(that.vehicle) && registrationDate.equals(that.registrationDate) && responsibleName.equals(that.responsibleName) && apartment.equals(that.apartment) && block.equals(that.block);
+        return id.equals(that.id) && parkingSpotNumber.equals(that.parkingSpotNumber) && vehicle.equals(that.vehicle) && responsibleName.equals(that.responsibleName) && apartment.equals(that.apartment) && block.equals(that.block);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, parkingSpotNumber, vehicle, registrationDate, responsibleName, apartment, block);
+        return Objects.hash(id, parkingSpotNumber, vehicle, responsibleName, apartment, block);
     }
 }
