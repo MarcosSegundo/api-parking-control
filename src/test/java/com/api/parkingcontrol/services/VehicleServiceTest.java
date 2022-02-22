@@ -1,7 +1,6 @@
 package com.api.parkingcontrol.services;
 
 import com.api.parkingcontrol.builder.VehicleDtoBuilder;
-import com.api.parkingcontrol.mapper.ParkingSpotMapper;
 import com.api.parkingcontrol.repositories.VehicleRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,8 +19,6 @@ public class VehicleServiceTest {
 
     @InjectMocks
     private VehicleService vehicleService;
-
-    private final ParkingSpotMapper MAPPER = ParkingSpotMapper.INSTANCE;
 
     @Test
     public void whenAVehiclePlateInformedAndNotExistsThenReturnFalse() {
