@@ -22,7 +22,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ParkingSpotServiceTest {
@@ -182,7 +182,44 @@ public class ParkingSpotServiceTest {
         //when
         when(parkingSpotRepository.findById(notFoundedParkingSpot.getId())).thenThrow(ParkingSpotNotFoundException.class);
 
+        //then
         assertThatThrownBy(() -> parkingSpotService.findById(notFoundedParkingSpot.getId()))
+                .isInstanceOf(ParkingSpotNotFoundException.class);
+    }
+
+    @Test
+    public void whenDeleteIsCalledWithValidThenAParkingSpotShouldBeDeleted() {
+        //given
+        ParkingSpotDTO expectedParkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        ParkingSpot deletedParkingSpot = MAPPER.toModel(expectedParkingSpotDTO);
+
+        //when
+        when(parkingSpotRepository.findById(expectedParkingSpotDTO.getId())).thenReturn(Optional.of(deletedParkingSpot));
+        doNothing().when(parkingSpotRepository).delete(deletedParkingSpot);
+
+        //chamada do método à ser testado para invocar os métodos mockados.
+        parkingSpotService.deleteById(expectedParkingSpotDTO.getId());
+
+        //then
+        verify(parkingSpotRepository).findById(expectedParkingSpotDTO.getId());
+        verify(parkingSpotRepository).delete(deletedParkingSpot);
+    }
+
+    @Test
+    public void whenDeleteIsCalledWithInValidThenAnExceptionShouldBeThrow() {
+        //given
+        ParkingSpotDTO expectedParkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        ParkingSpot deletedParkingSpot = MAPPER.toModel(expectedParkingSpotDTO);
+
+        //when
+        when(parkingSpotRepository.findById(expectedParkingSpotDTO.getId())).thenThrow(ParkingSpotNotFoundException.class);
+
+        //then
+        assertThatThrownBy(() -> parkingSpotService.deleteById(expectedParkingSpotDTO.getId()))
                 .isInstanceOf(ParkingSpotNotFoundException.class);
     }
 }
