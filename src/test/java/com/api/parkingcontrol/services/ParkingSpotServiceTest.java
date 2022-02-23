@@ -222,4 +222,50 @@ public class ParkingSpotServiceTest {
         assertThatThrownBy(() -> parkingSpotService.deleteById(expectedParkingSpotDTO.getId()))
                 .isInstanceOf(ParkingSpotNotFoundException.class);
     }
+
+    @Test
+    public void whenUpdateIsCalledWithValidParkingSpotThenReturnAParkingSpot() {
+        //given
+        ParkingSpotDTO savedParkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        ParkingSpotDTO updatedParkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        ParkingSpot savedParkingSpot = MAPPER.toModel(savedParkingSpotDTO);
+
+        ParkingSpot updatedParkingSpot = MAPPER.toModel(updatedParkingSpotDTO);
+        updatedParkingSpot.setResponsibleName("Filipe Granjeiro");
+
+        //when
+        when(parkingSpotRepository.findById(savedParkingSpotDTO.getId())).thenReturn(Optional.of(savedParkingSpot));
+        when(parkingSpotRepository.save(any(ParkingSpot.class))).thenReturn(updatedParkingSpot);
+
+        //then
+        ParkingSpot updated = parkingSpotService.update(updatedParkingSpot.getId(), updatedParkingSpotDTO);
+
+        assertThat(updated.getResponsibleName()).isEqualTo(updatedParkingSpot.getResponsibleName());
+    }
+
+    @Test
+    public void whenUpdateIsCalledWithAInvalidParkingSpotThenAnExceptionShouldThrow() {
+        //given
+        ParkingSpotDTO savedParkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        ParkingSpotDTO updatedParkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        ParkingSpot savedParkingSpot = MAPPER.toModel(savedParkingSpotDTO);
+
+        ParkingSpot updatedParkingSpot = MAPPER.toModel(updatedParkingSpotDTO);
+        updatedParkingSpot.setResponsibleName("Filipe Granjeiro");
+
+        //when
+        when(parkingSpotRepository.findById(savedParkingSpotDTO.getId())).thenThrow(ParkingSpotNotFoundException.class);
+
+        //then
+        assertThatThrownBy(() -> parkingSpotService.update(updatedParkingSpot.getId(), updatedParkingSpotDTO))
+                .isInstanceOf(ParkingSpotNotFoundException.class);
+    }
 }
