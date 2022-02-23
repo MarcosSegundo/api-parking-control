@@ -256,8 +256,6 @@ public class ParkingSpotServiceTest {
         ParkingSpotDTO updatedParkingSpotDTO = ParkingSpotDtoBuilder.builder()
                 .build().toParkingSpotDTO();
 
-        ParkingSpot savedParkingSpot = MAPPER.toModel(savedParkingSpotDTO);
-
         ParkingSpot updatedParkingSpot = MAPPER.toModel(updatedParkingSpotDTO);
         updatedParkingSpot.setResponsibleName("Filipe Granjeiro");
 
