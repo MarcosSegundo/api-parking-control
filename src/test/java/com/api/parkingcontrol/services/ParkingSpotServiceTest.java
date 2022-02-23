@@ -110,4 +110,47 @@ public class ParkingSpotServiceTest {
         assertThat(foundedParkingSpots).hasSize(1);
     }
 
+    @Test
+    public void whenFindAllPageableIsCalledThenReturnAPageOfParkingSpot() {
+        //given
+        ParkingSpotDTO expectedParkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        ParkingSpot expectedParkingSpot = MAPPER.toModel(expectedParkingSpotDTO);
+
+        Pageable pageable = PageRequest.of(0, 1); //criando um page.
+
+        //criando um Page<ParkingSpot> a partir de uma lista.
+        Page<ParkingSpot> pageParkingSpots = new PageImpl<>(Collections.singletonList(expectedParkingSpot), pageable, 1L);
+
+        //when
+        when(parkingSpotRepository.findAll(pageable)).thenReturn(pageParkingSpots);
+
+        //then
+        Page<ParkingSpot> foundedPages = parkingSpotService.findAllPageable(pageable);
+
+        assertThat(foundedPages).hasSize(1);
+    }
+
+    @Test
+    public void whenFindAllPageableIsCalledThenReturnAEmptyPageOfParkingSpot() {
+        //given
+        ParkingSpotDTO expectedParkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        ParkingSpot expectedParkingSpot = MAPPER.toModel(expectedParkingSpotDTO);
+
+        Pageable pageable = PageRequest.ofSize(1); //criando um page.
+
+        //criando um Page<ParkingSpot> vazio
+        Page<ParkingSpot> pageParkingSpots = Page.empty();
+
+        //when
+        when(parkingSpotRepository.findAll(pageable)).thenReturn(pageParkingSpots);
+
+        //then
+        Page<ParkingSpot> foundedPages = parkingSpotService.findAllPageable(pageable);
+
+        assertThat(foundedPages).isEmpty();
+    }
 }
