@@ -153,4 +153,36 @@ public class ParkingSpotServiceTest {
 
         assertThat(foundedPages).isEmpty();
     }
+
+    @Test
+    public void whenValidIdIsInformedThenReturnAParkingSpot() {
+        //given
+        ParkingSpotDTO expectedParkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        ParkingSpot expectedParkingSpot = MAPPER.toModel(expectedParkingSpotDTO);
+
+        //when
+        when(parkingSpotRepository.findById(expectedParkingSpot.getId())).thenReturn(Optional.of(expectedParkingSpot));
+
+        //then
+        ParkingSpot savedParkingSpot = parkingSpotService.findById(expectedParkingSpot.getId());
+
+        assertThat(savedParkingSpot).isEqualTo(expectedParkingSpot);
+    }
+
+    @Test
+    public void whenInvalidIdIsInformedThenAnExceptionShouldBeThrow() {
+        //given
+        ParkingSpotDTO expectedParkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        ParkingSpot notFoundedParkingSpot = MAPPER.toModel(expectedParkingSpotDTO);
+
+        //when
+        when(parkingSpotRepository.findById(notFoundedParkingSpot.getId())).thenThrow(ParkingSpotNotFoundException.class);
+
+        assertThatThrownBy(() -> parkingSpotService.findById(notFoundedParkingSpot.getId()))
+                .isInstanceOf(ParkingSpotNotFoundException.class);
+    }
 }
