@@ -15,6 +15,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Collections;
+import java.util.List;
+
 import static com.api.parkingcontrol.utils.JsonParseUtils.asJsonString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -119,5 +122,40 @@ public class ParkingSpotControllerTest {
                         .content(request)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void whenGETFindAllIsCalledThenReturnAParkingSpotList() throws Exception {
+        //given
+        ParkingSpotDTO parkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        ParkingSpot parkingSpot = MAPPER.toModel(parkingSpotDTO);
+
+        List<ParkingSpot> parkingSpots = Collections.singletonList(parkingSpot);
+
+        //when
+        when(parkingSpotService.findAll()).thenReturn(parkingSpots);
+
+        //then
+        mockMvc.perform(get(PARKING_SPOT_API_PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(parkingSpots))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].apartment").value(parkingSpotDTO.getApartment()));
+    }
+
+    @Test
+    public void whenGETFindAllIsCalledWithoutDataThenOkStatusIsReturned() throws Exception {
+        //when
+        when(parkingSpotService.findAll()).thenReturn(Collections.emptyList());
+
+        //then
+        mockMvc.perform(get(PARKING_SPOT_API_PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
