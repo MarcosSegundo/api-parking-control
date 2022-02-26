@@ -12,6 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -157,5 +160,50 @@ public class ParkingSpotControllerTest {
                         .content("{}")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void whenGETFindAllPageableIsCalledThenOkStatusIsReturned() throws Exception {
+        //given
+        ParkingSpotDTO parkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        ParkingSpot parkingSpot = MAPPER.toModel(parkingSpotDTO);
+
+        PageRequest pageable = PageRequest.of(0, 1);
+
+        PageImpl<ParkingSpot> parkingSpots = new PageImpl<>(Collections.singletonList(parkingSpot), pageable, 1);
+
+        //when
+        when(parkingSpotService.findAllPageable(pageable)).thenReturn(parkingSpots);
+
+        //then
+        mockMvc.perform(get(PARKING_SPOT_API_PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(parkingSpots))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void whenGETFindAllPageableWithoutParkingSpotIsCalledThenOkStatusIsReturned() throws Exception {
+        //given
+        ParkingSpotDTO parkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        PageRequest pageable = PageRequest.of(0, 1);
+
+        Page<ParkingSpot> parkingSpots = Page.empty();
+
+        //when
+        when(parkingSpotService.findAllPageable(pageable)).thenReturn(parkingSpots);
+
+        //then
+        mockMvc.perform(get(PARKING_SPOT_API_PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(parkingSpots))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isEmpty());
     }
 }
