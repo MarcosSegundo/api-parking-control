@@ -1,8 +1,10 @@
 package com.api.parkingcontrol.dto;
 
 import com.api.parkingcontrol.validation.constraints.ExistsPlate;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -11,6 +13,8 @@ import java.util.UUID;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class VehicleDTO {
 
     private UUID id;
