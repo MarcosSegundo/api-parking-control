@@ -63,7 +63,7 @@ public class ParkingSpotControllerTest {
     }
 
     @Test
-    public void whenPOSTIsCalledWithoutARequiredFieldThenAExceptionShouldThrow() throws Exception {
+    public void whenPOSTIsCalledWithoutARequiredFieldThenStatusBadRequestIsReturned() throws Exception {
         //given
         ParkingSpotDTO parkingSpotDTO = ParkingSpotDtoBuilder.builder()
                 .build().toParkingSpotDTO();
@@ -84,7 +84,7 @@ public class ParkingSpotControllerTest {
     }
 
     @Test
-    public void whenGETIsCalledWithValidIdThenItShouldReturnAParkingSpot() throws Exception {
+    public void whenGETIsCalledWithValidIdThenStatusOkIsReturned() throws Exception {
         //given
         ParkingSpotDTO parkingSpotDTO = ParkingSpotDtoBuilder.builder()
                 .build().toParkingSpotDTO();
@@ -106,7 +106,7 @@ public class ParkingSpotControllerTest {
     }
 
     @Test
-    public void whenGETIsCalledWithInValidIdThenShouldReturnAnException() throws Exception {
+    public void whenGETIsCalledWithInValidIdThenStatusNotFoundIsReturned() throws Exception {
         //given
         ParkingSpotDTO parkingSpotDTO = ParkingSpotDtoBuilder.builder()
                 .build().toParkingSpotDTO();
@@ -125,7 +125,7 @@ public class ParkingSpotControllerTest {
     }
 
     @Test
-    public void whenGETFindAllIsCalledThenReturnAParkingSpotList() throws Exception {
+    public void whenGETFindAllIsCalledThenOkStatusIsReturned() throws Exception {
         //given
         ParkingSpotDTO parkingSpotDTO = ParkingSpotDtoBuilder.builder()
                 .build().toParkingSpotDTO();
