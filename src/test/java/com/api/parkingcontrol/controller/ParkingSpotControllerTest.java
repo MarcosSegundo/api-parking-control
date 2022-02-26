@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static com.api.parkingcontrol.utils.JsonParseUtils.asJsonString;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -55,7 +56,7 @@ public class ParkingSpotControllerTest {
                         .content(asJsonString(parkingSpot))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(parkingSpotDTO.getId().toString()));
+                .andExpect(jsonPath("$.apartment").value(parkingSpot.getApartment()));
     }
 
     @Test
@@ -77,5 +78,46 @@ public class ParkingSpotControllerTest {
                         .content(asJsonString(parkingSpot))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void whenGETIsCalledWithValidIdThenItShouldReturnAParkingSpot() throws Exception {
+        //given
+        ParkingSpotDTO parkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        ParkingSpot parkingSpot = MAPPER.toModel(parkingSpotDTO);
+
+        //when
+        when(parkingSpotService.findById(parkingSpotDTO.getId())).thenReturn(parkingSpot);
+
+        //then
+        String request = String.format("{\"id\": \"%s\"}", parkingSpotDTO.getId());
+
+        mockMvc.perform(get(PARKING_SPOT_API_PATH + "/{id}", parkingSpotDTO.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.apartment").value(parkingSpot.getApartment()));
+    }
+
+    @Test
+    public void whenGETIsCalledWithInValidIdThenShouldReturnAnException() throws Exception {
+        //given
+        ParkingSpotDTO parkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        //when
+        when(parkingSpotService.findById(parkingSpotDTO.getId())).thenThrow(ParkingSpotNotFoundException.class);
+
+        //then
+        String request = String.format("{\"id\": \"%s\"}", parkingSpotDTO.getId());
+
+        mockMvc.perform(get(PARKING_SPOT_API_PATH + "/{id}", parkingSpotDTO.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }
