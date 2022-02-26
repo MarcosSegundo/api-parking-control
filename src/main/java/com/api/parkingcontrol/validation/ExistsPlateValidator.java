@@ -9,12 +9,8 @@ import javax.validation.ConstraintValidatorContext;
 
 public class ExistsPlateValidator implements ConstraintValidator<ExistsPlate, String> {
 
-    private final VehicleService vehicleService;
-
     @Autowired
-    public ExistsPlateValidator(VehicleService vehicleService) {
-        this.vehicleService = vehicleService;
-    }
+    private VehicleService vehicleService;
 
     @Override
     public void initialize(ExistsPlate constraintAnnotation) {

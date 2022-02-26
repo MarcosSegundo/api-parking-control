@@ -9,12 +9,8 @@ import javax.validation.ConstraintValidatorContext;
 
 public class ExistsParkingSpotNumberValidator implements ConstraintValidator<ExistsParkingSpotNumber, String> {
 
-    private final ParkingSpotService parkingSpotService;
-
     @Autowired
-    public ExistsParkingSpotNumberValidator(ParkingSpotService parkingSpotService) {
-        this.parkingSpotService = parkingSpotService;
-    }
+    private ParkingSpotService parkingSpotService;
 
     @Override
     public void initialize(ExistsParkingSpotNumber constraintAnnotation) {
