@@ -22,9 +22,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.api.parkingcontrol.utils.JsonParseUtils.asJsonString;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -205,5 +204,37 @@ public class ParkingSpotControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isEmpty());
+    }
+
+    @Test
+    public void whenDELETEIsCalledWithValidIdThenStatusNoContentIsReturned() throws Exception {
+        //given
+        ParkingSpotDTO parkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        //when
+        doNothing().when(parkingSpotService).deleteById(parkingSpotDTO.getId());
+
+        mockMvc.perform(delete(PARKING_SPOT_API_PATH + "/{id}", parkingSpotDTO.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(parkingSpotDTO))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void whenDELETEIsCalledWithInValidIdThenStatusNotFoundIsReturned() throws Exception {
+        //given
+        ParkingSpotDTO parkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        //when
+        doThrow(ParkingSpotNotFoundException.class).when(parkingSpotService).deleteById(parkingSpotDTO.getId());
+
+        mockMvc.perform(delete(PARKING_SPOT_API_PATH + "/{id}", parkingSpotDTO.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(parkingSpotDTO))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }
