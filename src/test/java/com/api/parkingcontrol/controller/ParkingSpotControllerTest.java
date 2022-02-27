@@ -237,4 +237,44 @@ public class ParkingSpotControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    public void whenPUTIsCalledWithValidIdThenOkStatusIsReturned() throws Exception {
+        //given
+        ParkingSpotDTO parkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        ParkingSpot parkingSpot = MAPPER.toModel(parkingSpotDTO);
+
+        //when
+        when(parkingSpotService.save(parkingSpotDTO)).thenReturn(parkingSpot);
+        when(parkingSpotService.update(parkingSpotDTO.getId(), parkingSpotDTO)).thenReturn(parkingSpot);
+
+        //then
+        mockMvc.perform(post(PARKING_SPOT_API_PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(parkingSpot))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(parkingSpot.getId().toString()));
+    }
+
+    @Test
+    public void whenPUTIsCalledWithInValidIdThenStatusNotFoundIsReturned() throws Exception {
+        //given
+        ParkingSpotDTO parkingSpotDTO = ParkingSpotDtoBuilder.builder()
+                .build().toParkingSpotDTO();
+
+        ParkingSpot parkingSpot = MAPPER.toModel(parkingSpotDTO);
+
+        //when
+        when(parkingSpotService.save(parkingSpotDTO)).thenThrow(ParkingSpotNotFoundException.class);
+
+        //then
+        mockMvc.perform(post(PARKING_SPOT_API_PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(parkingSpot))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
 }
