@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/parking-spot")
-public class ParkingSpotController {
+public class ParkingSpotController implements ParkingSpotControllerDocs{
 
     @Autowired
     private ParkingSpotService parkingSpotService;

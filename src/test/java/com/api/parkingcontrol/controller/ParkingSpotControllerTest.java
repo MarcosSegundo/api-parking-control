@@ -177,7 +177,7 @@ public class ParkingSpotControllerTest {
         when(parkingSpotService.findAllPageable(pageable)).thenReturn(parkingSpots);
 
         //then
-        mockMvc.perform(get(PARKING_SPOT_API_PATH)
+        mockMvc.perform(get(PARKING_SPOT_API_PATH + "/page")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(parkingSpots))
                         .accept(MediaType.APPLICATION_JSON))
@@ -198,7 +198,7 @@ public class ParkingSpotControllerTest {
         when(parkingSpotService.findAllPageable(pageable)).thenReturn(parkingSpots);
 
         //then
-        mockMvc.perform(get(PARKING_SPOT_API_PATH)
+        mockMvc.perform(get(PARKING_SPOT_API_PATH + "/page")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(parkingSpots))
                         .accept(MediaType.APPLICATION_JSON))
