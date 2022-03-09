@@ -79,5 +79,6 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 ---
 Feito por Marcos Segundo 👋🏽 Entre em contato!
+
 [![Gmail Badge](https://img.shields.io/badge/-marcos.segundo.cz@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:tgmarinho@gmail.com)](mailto:tgmarinho@gmail.com)
 
